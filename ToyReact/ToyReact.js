@@ -1,81 +1,87 @@
-// 其实可以 不需要包装类型
-// class ElementWarpper {
-//   constructor(type){
-//     this.root = 
-//   }
-// }
+class ElementWarpper {
+  constructor(type) {
+    this.root = document.createElement(type)
+  }
+  setAttribute(key, value) {
+    this.root.setAttribute(key, value)
+  }
+  appendChild(vChild) {
+    vChild.mountTo(this.root)
+  }
+  mountTo(parent) {
+    parent.appendChild(this.root)
+  }
+}
+
+class TxetWarpper {
+  constructor(type) {
+    this.root = document.createTextNode(type)
+  }
+  mountTo(parent) {
+    parent.appendChild(this.root)
+  }
+}
 
 export class Component {
   constructor() {
     this.children = []
   }
-  setAttribute(key, value) {
-    this[key] = value
+  setAttribute(name, value) {
+    this[name] = value
   }
-
-  appendChild(child) {
-    this.children.push(child)
+  mountTo(parent) {
+    let vdom = this.render()
+    vdom.mountTo(parent)
+  }
+  appendChild(vChild) {
+    this.children.push(vChild)
   }
 }
 
-export const ToyReact = {
-  /* 
-    createElement 其实要处理的情况分一下三种：
-
-    处理 type，attributes， 以及childrens
-
-    type
-    1、html 标签
-    2、字符文本
-    3、自定义组件
-
-    attributes 很好处理
-
-    childrens 其实也是要分
-    1、html 标签
-    2、字符文本
-    3、自定义组件
-    而且可能存在多层嵌套，因此需要递归的处理
-  */
-
+export const MyReact = {
   createElement(type, attributes, ...childrens) {
     let element
 
-    if (typeof type === "string") {
-      element = document.createElement(type)
-    }
-
-    if (typeof type === "function") {
-      element = new type()
+    // 处理 html 标签
+    if (typeof type === 'string') {
+      element = new ElementWarpper(type)
+    } else {
+      // 处理自定义组件
+      element = new type;
     }
 
     for (let key in attributes) {
       element.setAttribute(key, attributes[key])
     }
 
-    const dgChild = (childrens) => {
+    // 自定义组件 存在 包裹的内容，递归处理
+    let insertChildren = (childrens) => {
       for (let child of childrens) {
-        if (Array.isArray(child)) {
-          dgChild(child)
-          return
+        if (typeof child === 'object' && child instanceof Array) {
+          insertChildren(child)
+        } else {
+          if (
+            !(child instanceof Component)
+            && !(child instanceof ElementWarpper)
+            && !(child instanceof TxetWarpper)
+          ) {
+            child = child.toString()
+          }
+          if (typeof child === 'string') {
+            // 处理文本节点
+            child = new TxetWarpper(child)
+          }
+          element.appendChild(child)
         }
-        if (typeof child === "string") {
-          child = document.createTextNode(child)
-        }
-        if (typeof child !== "object") {
-          child = document.createTextNode(String(child))
-        }
-
-        element.appendChild(child)
       }
     }
 
-    dgChild(childrens)
+    insertChildren(childrens)
 
     return element
   },
 
   render(vdom, root) {
-    root.appendChild(vdom.render())
+    vdom.mountTo(root)
   }
 }
