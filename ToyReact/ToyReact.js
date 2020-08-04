@@ -3,6 +3,8 @@ class ElementWarpper {
     this.root = document.createElement(type)
   }
   setAttribute(key, value) {
+    console.log(name, value)
+
     this.root.setAttribute(key, value)
   }
   appendChild(vChild) {
@@ -25,8 +27,10 @@ class TxetWarpper {
 export class Component {
   constructor() {
     this.children = []
+    this.props = Object.assign({})
   }
   setAttribute(name, value) {
+    this.props[name] = value
     this[name] = value
   }
   mountTo(parent) {
@@ -38,7 +42,7 @@ export class Component {
   }
 }
 
-export const MyReact = {
+export const ToyReact = {
   createElement(type, attributes, ...childrens) {
     let element
 

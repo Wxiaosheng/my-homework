@@ -1,38 +1,49 @@
 import { ToyReact, Component } from './ToyReact'
 
-class MyComponent extends Component {
-  //  可以不定义 mountTo 方法
-
+class Square extends Component {
   render() {
-    return <div>
-      <span>Hello </span>
-      <span>World!</span>
-      {true}
-      <div>
-        {[1, 2, 3, 4]}
-      </div>
-
-      <div>{this.children}</div>
-    </div>
-
-    // return <div>
-    //   <span>hello</span>
-    //   &nbsp;
-    //   <span>world!</span>
-    //   <div>
-    //     {true}
-    //     {this.children}
-    //   </div>
-    // </div>
+    return (
+      <button className="square">
+        {this.props.value}
+      </button>
+    );
   }
 }
 
-const a = <MyComponent name="a" id="a">MyComponent</MyComponent>
+class Board extends Component {
+  renderSquare(i) {
+    return (
+      <Square
+        value={i}
+        onClick={() => this.handleClick(i)}
+      />
+    )
+  }
 
-// const a = <div name="a" id="a">main</div>
+  render() {
+    const status = 'Next player: X';
 
-// console.log(a)
+    return (
+      <div>
+        <div className="status">{status}</div>
+        <div className="board-row">
+          {this.renderSquare(0)}
+          {this.renderSquare(1)}
+          {this.renderSquare(2)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(3)}
+          {this.renderSquare(4)}
+          {this.renderSquare(5)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(6)}
+          {this.renderSquare(7)}
+          {this.renderSquare(8)}
+        </div>
+      </div>
+    );
+  }
+}
 
-// document.body.appendChild(a)
-
-ToyReact.render(a, document.body)
+ToyReact.render(<Board />, document.body)
