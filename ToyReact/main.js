@@ -1,10 +1,16 @@
 import { ToyReact, Component } from './ToyReact'
 
 class Square extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: null,
+    };
+  }
   render() {
     return (
-      <button className="square">
-        {this.props.value}
+      <button style={`display: inline-block; width: 50px; height: 50px; line-height: 50px; margin: 5px;`} onClick={() => this.setState({value: 'X'})}>
+        {this.state.value ? this.state.value : ""}
       </button>
     );
   }
@@ -13,10 +19,7 @@ class Square extends Component {
 class Board extends Component {
   renderSquare(i) {
     return (
-      <Square
-        value={i}
-        onClick={() => this.handleClick(i)}
-      />
+      <Square  value={i} />
     )
   }
 
