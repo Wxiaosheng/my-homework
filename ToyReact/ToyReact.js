@@ -4,6 +4,9 @@ class ElementWarpper {
     this.children = []
     this.props = Object.create(null)
   }
+  get vdom() {
+    return this
+  }
   setAttribute(name, value) {
     /* 
     if (name.match(/^on([\s\S]+)$/)) {
@@ -82,6 +85,9 @@ class TxetWarpper {
     this.children = []
     this.props = Object.create(null)
   }
+  get vdom() {
+    return this
+  }
   mountTo(range) {
     this.range = range
     range.deleteContents()
@@ -107,6 +113,10 @@ export class Component {
   }
   appendChild(vChild) {
     this.children.push(vChild)
+  }
+
+  get vdom() {
+    return this.render().vdom
   }
 
   update() {
