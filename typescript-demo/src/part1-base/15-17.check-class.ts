@@ -108,9 +108,70 @@ export default () => {
 
   // 3. 返回值类型 （目标函数的返回值类型必须与源函数的类型相同，或为其子类型）
   let g = () => ({ name: 'a' })
-  let h = () => ({ name: h, location: true })
-  // g = h
-  // h = f
+  let h = () => ({ name: 'a', location: true })
+  g = h
+  // h = g
+
+
+  // 枚举类型的兼容性 (和数字是兼容的)
+  enum Fruit { Apple, Banana }
+  enum Color { Red, Yellow }
+  let fruit: Fruit = Fruit.Apple
+  fruit = 5
+  let no = Fruit.Apple
+  // let col: Color.Red = Color.Yellow
+
+
+  // 类的兼容性 （和接口比较相似，主要比较结构，注意 静态成员和构造函数是不参与比较, 如果类中含有私有成员）
+  class A {
+    constructor(p: number, q: number) { }
+    id: number = 1
+    private name: string = ''
+  }
+
+  class B {
+    static s = 1
+    constructor(p: number) { }
+    id: number = 2
+    private name: string = ''
+  }
+
+  let aa = new A(1, 2)
+  let bb = new B(1)
+  // aa = bb
+  // bb = aa
+
+  class C extends A { }
+
+  let cc = new C(2, 3)
+  aa = cc
+  // bb = cc
+
+
+  // 泛型的兼容性
+  interface Empty<T> {
+    value: T
+  }
+
+  // let obj1: Empty<number> = {}
+  // let obj2: Empty<string> = {}
+  // obj1 = obj2
+
+  let fn1 = <T>(x: T): T => {
+    console.log(x)
+    return x
+  }
+
+  let fn2 = <U>(y: U): U => {
+    console.log(y)
+    return y
+  }
+
+  fn1 = fn2
+
+  // 口诀：
+  // 结构之间兼容，成员少的兼容成员多的
+  // 函数之间兼容，参数多的兼容参数少的
 
 
 
