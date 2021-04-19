@@ -177,4 +177,65 @@ export default () => {
 
 
   // 17 - 类型保护
+  // TypeScript 能够在特定的区块中保证变量属于某种确定的类型
+  // 可以在此区块中放心地引用此类型属性，或调用此类型的方法
+  // 有四种创建方式
+  // 1. instanceof
+  // 2. in （判断某个属性是否属于某个对象）
+  // 3. typeof (比较适用基本数据类型)
+  // 4. 创建类型保护函数
+  enum Type { Strong, Week }
+
+  class Java {
+    helloJava() {
+      console.log('hello Java')
+    }
+    java: any
+  }
+
+  class JavaScript {
+    helloJavaScript() {
+      console.log('hello JavaScript')
+    }
+    javaScript: any
+  }
+
+  // 自定义 类型保护函数 （返回值 类型谓词）
+  function isJava(lang: Java | JavaScript): lang is Java {
+    return (lang as Java).helloJava !== undefined
+  }
+
+  function getLanguage(type: Type) {
+    let lang = type === Type.Strong ? new Java() : new JavaScript()
+    // if ((lang as Java).helloJava) {
+    //   (lang as Java).helloJava()
+    // } else {
+
+    //   (lang as JavaScript).helloJavaScript()
+    // }
+    if (lang instanceof Java) {
+      lang.helloJava() // 可以放心调用，且有提示
+    } else {
+      lang.helloJavaScript()
+    }
+
+    if ('java' in lang) {
+      lang.helloJava()
+    } else {
+      lang.helloJavaScript()
+    }
+
+    if (isJava(lang)) {
+      lang.helloJava()
+    } else {
+      lang.helloJavaScript()
+    }
+
+    return lang
+  }
+
+  // getLanguage(Type.Strong)
+  console.log(getLanguage(Type.Strong))
+
+
 }
