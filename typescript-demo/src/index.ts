@@ -1,4 +1,5 @@
-import datatype from './part1-base/05.datatype'
+// ------ 基础篇 ------
+// import datatype from './part1-base/05.datatype'
 // import _enum from './part1-base/06.enum'
 // import _interface from './part1-base/07-08.interface'
 // import _function from './part1-base/09.function'
@@ -6,14 +7,19 @@ import datatype from './part1-base/05.datatype'
 // import _classInterface from './part1-base/12.class-interface'
 // import _generics from './part1-base/13-14.generics'
 // import _checkClass from './part1-base/15-17.check-class'
-import _advanced1 from './part1-base/18.advanced-1'
-import _advanced2 from './part1-base/19-21.advanced-2'
+// import _advanced1 from './part1-base/18.advanced-1'
+// import _advanced2 from './part1-base/19-21.advanced-2'
+
+
+// ------ 工程篇 ------
+import './part2-project/01.module/es6/c'
+import './part2-project/01.module/node/c.node'
 
 let hello: string = 'Hello World'
 
 document.querySelectorAll('.app')[0].innerHTML = hello
 
-datatype()
+// datatype()
 // _enum()
 // _interface()
 // _function()
@@ -21,5 +27,5 @@ datatype()
 // _classInterface()
 // _generics()
 // _checkClass()
-_advanced1()
-_advanced2()
+// _advanced1()
+// _advanced2()
