@@ -219,11 +219,11 @@ export default () => {
       lang.helloJavaScript()
     }
 
-    if ('java' in lang) {
-      lang.helloJava()
-    } else {
-      lang.helloJavaScript()
-    }
+    // if ('java' in lang) {
+    //   lang.helloJava()
+    // } else {
+    //   lang.helloJavaScript()
+    // }
 
     if (isJava(lang)) {
       lang.helloJava()
